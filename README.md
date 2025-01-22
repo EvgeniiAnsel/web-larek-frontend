@@ -81,29 +81,29 @@
     class Api {
     protected baseUrl: string;
 
-    constructor(baseUrl: string) {
-        this.baseUrl = baseUrl;
-    }
+        constructor(baseUrl: string) {
+            this.baseUrl = baseUrl;
+        }
 
-    protected handleResponse(response: Response): Promise<object> {
-        if (response.ok) return response.json();
-        else return response.json().then(data => Promise.reject(data.error ?? response.statusText));
-    }
+        protected handleResponse(response: Response): Promise<object> {
+            if (response.ok) return response.json();
+            else return response.json().then(data => Promise.reject(data.error ?? response.statusText));
+        }
 
-    // GET запрос
-    get(uri: string): Promise<object> {
-        return fetch(`${this.baseUrl}${uri}`).then(this.handleResponse);
-    }
+        // GET запрос
+        get(uri: string): Promise<object> {
+            return fetch(`${this.baseUrl}${uri}`).then(this.handleResponse);
+        }
 
-    // POST запрос
-    post(uri: string, data: object, method: ApiPostMethods = 'POST'): Promise<object> {
-        return fetch(`${this.baseUrl}${uri}`, {
-            method,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-        }).then(this.handleResponse);
+        // POST запрос
+        post(uri: string, data: object, method: ApiPostMethods = 'POST'): Promise<object> {
+            return fetch(`${this.baseUrl}${uri}`, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            }).then(this.handleResponse);
+        }
     }
-   }
 
 **Методы**:
 
