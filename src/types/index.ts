@@ -29,3 +29,36 @@ export enum EventTypes {
     REMOVE_PRODUCT_FROM_CART = 'remove_product_from_cart',
     ORDER_PLACED = 'order_placed',
 }
+
+// Типы для событийного брокера
+export type EventPayloads = {
+    [EventTypes.ADD_PRODUCT_TO_CART]: { productId: string };
+    [EventTypes.REMOVE_PRODUCT_FROM_CART]: { productId: string };
+    [EventTypes.ORDER_PLACED]: { order: Order };
+};
+
+// Интерфейсы моделей
+export interface ProductModel {
+    toView(data: Product): ProductCardView;
+}
+
+export interface CartModel {
+    toView(data: CartProduct[]): CartView;
+}
+
+// Интерфейсы отображений (Views)
+export interface ProductView {
+    render(data: ProductCardView): void;
+}
+
+export interface CartView {
+    render(data: CartProduct[]): void;
+}
+
+// Типы для данных отображения
+export interface ProductCardView {
+    id: string;
+    title: string;
+    price: string; // форматированная цена
+    shortDescription: string;
+}
