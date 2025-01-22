@@ -134,12 +134,10 @@ yarn build
             else return response.json().then(data => Promise.reject(data.error ?? response.statusText));
         }
 
-        // GET запрос
         get(uri: string): Promise<object> {
             return fetch(`${this.baseUrl}${uri}`).then(this.handleResponse);
         }
 
-        // POST запрос
         post(uri: string, data: object, method: ApiPostMethods = 'POST'): Promise<object> {
             return fetch(`${this.baseUrl}${uri}`, {
                 method,
@@ -160,11 +158,11 @@ yarn build
 
     class ApiModel extends Api {
         getListProductCard(): Promise<Product[]> {
-            return this.get('/products'); // Получаем список товаров
+            return this.get('/products');
         }
 
         postOrderLot(order: Order): Promise<any> {
-            return this.post('/order', order); // Отправляем заказ
+            return this.post('/order', order);
         }
     }
 
@@ -221,7 +219,6 @@ yarn build
         }
 
         validateOrder(): boolean {
-            // Пример валидации
             return this.orderData.address.length > 0;
         }
 
@@ -230,7 +227,6 @@ yarn build
         }
 
         validateContacts(): boolean {
-            // Пример валидации
             return this.orderData.contact.email.includes('@') && this.orderData.contact.phone.length > 0;
         }
 
