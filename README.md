@@ -8,11 +8,12 @@
 
 ## Используемый стек
 
-- TypeScript ![](https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/typescript.png)
-- JavaScript ![](https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/javascript.png)
-- Webpack ![](https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/webpack.png)
-- HTML ![](https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/html.png)
-- SCSS ![](https://www.svgrepo.com/show/374067/scss2.svg)
+- TypeScript ![TypeScript](https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/typescript.png =20x20)
+- JavaScript ![JavaScript](https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/javascript.png =20x20)
+- Webpack ![Webpack](https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/webpack.png =20x20)
+- HTML ![HTML](https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/html.png =20x20)
+- SCSS ![SCSS](https://www.svgrepo.com/show/374067/scss2.svg =20x20)
+
 ------------
 
 ## Установка и запуск
