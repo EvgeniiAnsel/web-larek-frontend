@@ -78,7 +78,7 @@
 
 Это базовый класс для взаимодействия с сервером.
 
-`class Api {
+    class Api {
     protected baseUrl: string;
 
     constructor(baseUrl: string) {
@@ -103,7 +103,7 @@
             body: JSON.stringify(data),
         }).then(this.handleResponse);
     }
-}`
+}
 
 **Методы**:
 
