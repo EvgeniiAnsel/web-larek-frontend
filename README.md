@@ -114,15 +114,15 @@
 
 Модель для работы с товарами и заказами, наследует класс `Api`.
 
-`class ApiModel extends Api {
-    getListProductCard(): Promise<Product[]> {
-        return this.get('/products'); // Получаем список товаров
-    }
+    class ApiModel extends Api {
+        getListProductCard(): Promise<Product[]> {
+            return this.get('/products'); // Получаем список товаров
+        }
 
-    postOrderLot(order: Order): Promise<any> {
-        return this.post('/order', order); // Отправляем заказ
+        postOrderLot(order: Order): Promise<any> {
+            return this.post('/order', order); // Отправляем заказ
+        }
     }
-}`
 
 **Методы**:
 
@@ -133,29 +133,29 @@
 
 Модель для работы с данными корзины.
 
-`class BasketModel {
-    private items: CartProduct[] = [];
+    class BasketModel {
+        private items: CartProduct[] = [];
 
-    getCounter(): number {
-        return this.items.length;
-    }
+        getCounter(): number {
+            return this.items.length;
+        }
 
-    getSumAllProducts(): number {
-        return this.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    }
+        getSumAllProducts(): number {
+            return this.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        }
 
-    setSelectedCard(product: CartProduct): void {
-        this.items.push(product);
-    }
+        setSelectedCard(product: CartProduct): void {
+            this.items.push(product);
+        }
 
-    deleteCardToBasket(productId: string): void {
-        this.items = this.items.filter(item => item.productId !== productId);
-    }
+        deleteCardToBasket(productId: string): void {
+            this.items = this.items.filter(item => item.productId !== productId);
+        }
 
-    clearBasketProducts(): void {
-        this.items = [];
+        clearBasketProducts(): void {
+            this.items = [];
+        }
     }
-}`
 
 **Методы**:
 
@@ -169,31 +169,31 @@
 
 Модель для работы с данными, полученными от пользователя.
 
-`class FormModel {
-    private orderData: Order = { address: '', contact: { email: '', phone: '' }, items: [] };
+    class FormModel {
+        private orderData: Order = { address: '', contact: { email: '', phone: '' }, items: [] };
 
-    setOrderAddress(address: string): void {
-        this.orderData.address = address;
-    }
+        setOrderAddress(address: string): void {
+            this.orderData.address = address;
+        }
 
-    validateOrder(): boolean {
-        // Пример валидации
-        return this.orderData.address.length > 0;
-    }
+        validateOrder(): boolean {
+            // Пример валидации
+            return this.orderData.address.length > 0;
+        }
 
-    setOrderData(contact: { email: string, phone: string }): void {
-        this.orderData.contact = contact;
-    }
+        setOrderData(contact: { email: string, phone: string }): void {
+            this.orderData.contact = contact;
+        }
 
-    validateContacts(): boolean {
-        // Пример валидации
-        return this.orderData.contact.email.includes('@') && this.orderData.contact.phone.length > 0;
-    }
+        validateContacts(): boolean {
+            // Пример валидации
+            return this.orderData.contact.email.includes('@') && this.orderData.contact.phone.length > 0;
+        }
 
-    getOrderLot(): Order {
-        return this.orderData;
+        getOrderLot(): Order {
+            return this.orderData;
+        }
     }
-}`
 
 **Методы**:
 
@@ -211,22 +211,22 @@
 
 Компонент для отображения карточки товара.
 
-`class Card {
-    private element: HTMLElement;
+    class Card {
+        private element: HTMLElement;
 
-    constructor(elementId: string) {
-        this.element = document.getElementById(elementId) as HTMLElement;
-    }
+        constructor(elementId: string) {
+            this.element = document.getElementById(elementId) as HTMLElement;
+        }
 
-    setText(text: string): void {
-        this.element.textContent = text;
-    }
+        setText(text: string): void {
+            this.element.textContent = text;
+        }
 
-    setPrice(price: number): void {
-        const priceElement = this.element.querySelector('.price') as HTMLElement;
-        priceElement.textContent = `$${price}`;
+        setPrice(price: number): void {
+            const priceElement = this.element.querySelector('.price') as HTMLElement;
+            priceElement.textContent = `$${price}`;
+        }
     }
-}`
 
 **Методы**:
 
@@ -237,23 +237,23 @@
 
 Компонент для отображения корзины.
 
-`class Basket {
-    private basketModel: BasketModel;
+    class Basket {
+        private basketModel: BasketModel;
 
-    constructor(basketModel: BasketModel) {
-        this.basketModel = basketModel;
-    }
+        constructor(basketModel: BasketModel) {
+            this.basketModel = basketModel;
+        }
 
-    renderHeaderBasketCounter(): void {
-        const counter = document.querySelector('.basket-counter') as HTMLElement;
-        counter.textContent = `${this.basketModel.getCounter()}`;
-    }
+        renderHeaderBasketCounter(): void {
+            const counter = document.querySelector('.basket-counter') as HTMLElement;
+            counter.textContent = `${this.basketModel.getCounter()}`;
+        }
 
-    renderSumAllProducts(): void {
-        const sum = document.querySelector('.basket-total') as HTMLElement;
-        sum.textContent = `$${this.basketModel.getSumAllProducts()}`;
+        renderSumAllProducts(): void {
+            const sum = document.querySelector('.basket-total') as HTMLElement;
+            sum.textContent = `$${this.basketModel.getSumAllProducts()}`;
+        }
     }
-}`
 
 **Методы**:
 
@@ -266,40 +266,40 @@
 
 Это класс для работы с событиями, который связывает **Model** и **View**.
 
-`class EventEmitter implements IEvents {
-    private events: { [key: string]: Function[] } = {};
+    class EventEmitter implements IEvents {
+        private events: { [key: string]: Function[] } = {};
 
-    on(event: string, listener: Function): void {
-        if (!this.events[event]) this.events[event] = [];
-        this.events[event].push(listener);
-    }
+        on(event: string, listener: Function): void {
+            if (!this.events[event]) this.events[event] = [];
+            this.events[event].push(listener);
+        }
 
-    off(event: string, listener: Function): void {
-        const listeners = this.events[event];
-        if (listeners) {
-            this.events[event] = listeners.filter(fn => fn !== listener);
+        off(event: string, listener: Function): void {
+            const listeners = this.events[event];
+            if (listeners) {
+                this.events[event] = listeners.filter(fn => fn !== listener);
+            }
+        }
+
+        emit(event: string, data: any): void {
+            const listeners = this.events[event];
+            if (listeners) {
+                listeners.forEach(listener => listener(data));
+            }
+        }
+
+        onAll(listener: Function): void {
+            Object.keys(this.events).forEach(event => this.on(event, listener));
+        }
+
+        offAll(): void {
+            this.events = {};
+        }
+
+        trigger(event: string, ...args: any[]): void {
+            this.emit(event, ...args);
         }
     }
-
-    emit(event: string, data: any): void {
-        const listeners = this.events[event];
-        if (listeners) {
-            listeners.forEach(listener => listener(data));
-        }
-    }
-
-    onAll(listener: Function): void {
-        Object.keys(this.events).forEach(event => this.on(event, listener));
-    }
-
-    offAll(): void {
-        this.events = {};
-    }
-
-    trigger(event: string, ...args: any[]): void {
-        this.emit(event, ...args);
-    }
-}`
 
 **Методы**:
 
