@@ -377,7 +377,7 @@ yarn build
 
 ## UML схема
 
-![UML-схема](src/UML/UMLWEBLAREK.png)
+![UML-схема](src/images/UMLWEBLAREK.png)
 
 ### 1. **User Input**
 
