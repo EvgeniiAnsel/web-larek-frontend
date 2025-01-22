@@ -103,7 +103,7 @@
             body: JSON.stringify(data),
         }).then(this.handleResponse);
     }
-}
+ }
 
 **Методы**:
 
