@@ -337,4 +337,4 @@
 
 ## UML схема
 
-![UML-схема](UMLWEBLAREK.png)
+![UML-схема](src/UML/UMLWEBLAREK.png)
