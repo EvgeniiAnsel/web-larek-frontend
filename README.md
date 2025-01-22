@@ -5,6 +5,49 @@
 **WEB-ларёк** — это одностраничный интернет-магазин, предлагающий товары для разработчиков. Пользователи могут просматривать каталог товаров, добавлять их в корзину, а затем оформлять заказ через удобную форму с несколькими шагами.
 
 ------------
+
+## Используемый стек
+
+- TypeScript ![](https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/typescript.png)
+- JavaScript ![](https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/javascript.png)
+- Webpack ![](https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/webpack.png)
+- HTML ![](https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/html.png)
+- SCSS ![](https://www.svgrepo.com/show/374067/scss2.svg)
+------------
+
+## Установка и запуск
+
+**Для установки и запуска проекта**
+
+```
+npm install
+npm run start
+
+```
+
+или
+
+```
+yarn
+yarn start
+
+```
+
+## Сборка
+
+```
+npm run build
+
+```
+
+или
+
+```
+yarn build
+
+```
+
+------------
 ## Описание функционала магазина
 
  **1. Элементы пользовательского интерфейса**
