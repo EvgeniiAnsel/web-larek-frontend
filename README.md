@@ -8,11 +8,11 @@
 
 ## Используемый стек
 
-- TypeScript <img src="https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/typescript.png" width="30" height="30" />
-- JavaScript <img src="https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/javascript.png" width="30" height="30" />
-- Webpack <img src="https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/webpack.png" width="30" height="30" />
-- HTML <img src="https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/html.png" width="30" height="30" />
-- SCSS <img src="https://www.svgrepo.com/show/374067/scss2.svg" width="30" height="30" />
+- <img src="https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/typescript.png" width="30" height="30" /> TypeScript
+- <img src="https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/javascript.png" width="30" height="30" /> JavaScript 
+- <img src="https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/webpack.png" width="30" height="30" /> Webpack 
+- <img src="https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/html.png" width="30" height="30" /> HTML 
+- <img src="https://www.svgrepo.com/show/374067/scss2.svg" width="30" height="30" /> SCSS 
 
 ------------
 
