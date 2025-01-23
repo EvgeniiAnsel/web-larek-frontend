@@ -25,10 +25,33 @@ export interface Order {
 
 // Типы для событий
 export enum EventTypes {
-    ADD_PRODUCT_TO_CART = 'add_product_to_cart',
-    REMOVE_PRODUCT_FROM_CART = 'remove_product_from_cart',
-    ORDER_PLACED = 'order_placed',
+    ADD_PRODUCT_TO_CART = 'add_product_to_cart', // Добавление товара в корзину
+    REMOVE_PRODUCT_FROM_CART = 'remove_product_from_cart', // Удаление товара из корзины
+    ORDER_PLACED = 'order_placed', // Оформление заказа
+
+    VIEW_PRODUCT_DETAILS = 'view_product_details', // Просмотр деталей товара
+    CLOSE_PRODUCT_DETAILS = 'close_product_details', // Закрытие карточки товара
+    ADD_PRODUCT_FROM_MODAL = 'add_product_from_modal', // Добавление товара из модального окна
+
+    OPEN_CART = 'open_cart', // Открытие корзины
+    CLOSE_CART = 'close_cart', // Закрытие корзины
+
+    SELECT_PAYMENT_METHOD = 'select_payment_method', // Выбор способа оплаты
+    ENTER_DELIVERY_ADDRESS = 'enter_delivery_address', // Ввод адреса доставки
+    ERROR_ADDRESS_INVALID = 'error_address_invalid', // Ошибка: некорректный адрес
+    SUBMIT_DELIVERY_DETAILS = 'submit_delivery_details', // Отправка данных доставки
+
+    ENTER_CONTACT_INFORMATION = 'enter_contact_information', // Ввод контактной информации
+    VALIDATE_CONTACT_INFORMATION = 'validate_contact_information', // Проверка корректности контактных данных
+    ERROR_CONTACT_INVALID = 'error_contact_invalid', // Ошибка: некорректные контактные данные
+    SUBMIT_ORDER = 'submit_order', // Подтверждение заказа
+
+    SHOW_SUCCESS_MODAL = 'show_success_modal', // Показ окна успешного оформления заказа
+    CLOSE_SUCCESS_MODAL = 'close_success_modal', // Закрытие окна успешного оформления заказа
+    CONTINUE_SHOPPING = 'continue_shopping', // Кнопка "За новыми покупками"
 }
+
+
 
 // Типы для событийного брокера
 export type EventPayloads = {

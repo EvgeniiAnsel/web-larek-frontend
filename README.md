@@ -120,51 +120,16 @@ yarn build
 
 #### 1.1 **Api**
 
-Это базовый класс для взаимодействия с сервером.
-
-    class Api {
-    protected baseUrl: string;
-
-        constructor(baseUrl: string) {
-            this.baseUrl = baseUrl;
-        }
-
-        protected handleResponse(response: Response): Promise<object> {
-            if (response.ok) return response.json();
-            else return response.json().then(data => Promise.reject(data.error ?? response.statusText));
-        }
-
-        get(uri: string): Promise<object> {
-            return fetch(`${this.baseUrl}${uri}`).then(this.handleResponse);
-        }
-
-        post(uri: string, data: object, method: ApiPostMethods = 'POST'): Promise<object> {
-            return fetch(`${this.baseUrl}${uri}`, {
-                method,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            }).then(this.handleResponse);
-        }
-    }
+**Api** — это базовый класс для взаимодействия с сервером, он управляет запросами GET и POST, а также обрабатывает ошибки, возвращаемые сервером.
 
 **Методы**:
 
--   `get`: выполняет запрос GET для получения данных.
--   `post`: выполняет запрос POST для отправки данных.
+-   `get`: выполняет запрос GET для получения данных с сервера по указанному URI.
+-   `post`: выполняет запрос POST для отправки данных на сервер.
 
 #### 1.2 **ApiModel**
 
-Модель для работы с товарами и заказами, наследует класс `Api`.
-
-    class ApiModel extends Api {
-        getListProductCard(): Promise<Product[]> {
-            return this.get('/products');
-        }
-
-        postOrderLot(order: Order): Promise<any> {
-            return this.post('/order', order);
-        }
-    }
+**ApiModel** — это модель, которая наследует класс `Api` и предоставляет методы для получения списка товаров и отправки заказов на сервер.
 
 **Методы**:
 
@@ -173,67 +138,19 @@ yarn build
 
 #### 1.3 **BasketModel**
 
-Модель для работы с данными корзины.
-
-    class BasketModel {
-        private items: CartProduct[] = [];
-
-        getCounter(): number {
-            return this.items.length;
-        }
-
-        getSumAllProducts(): number {
-            return this.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-        }
-
-        setSelectedCard(product: CartProduct): void {
-            this.items.push(product);
-        }
-
-        deleteCardToBasket(productId: string): void {
-            this.items = this.items.filter(item => item.productId !== productId);
-        }
-
-        clearBasketProducts(): void {
-            this.items = [];
-        }
-    }
+**BasketModel** — это модель для работы с данными корзины, которая включает товары, добавленные в корзину, а также предоставляет методы для получения данных о товарах в корзине.
 
 **Методы**:
 
 -   `getCounter`: возвращает количество товаров в корзине.
--   `getSumAllProducts`: возвращает общую стоимость товаров.
+-   `getSumAllProducts`: возвращает общую стоимость всех товаров в корзине.
 -   `setSelectedCard`: добавляет товар в корзину.
 -   `deleteCardToBasket`: удаляет товар из корзины.
 -   `clearBasketProducts`: очищает корзину.
 
 #### 1.4 **FormModel**
 
-Модель для работы с данными, полученными от пользователя.
-
-    class FormModel {
-        private orderData: Order = { address: '', contact: { email: '', phone: '' }, items: [] };
-
-        setOrderAddress(address: string): void {
-            this.orderData.address = address;
-        }
-
-        validateOrder(): boolean {
-            return this.orderData.address.length > 0;
-        }
-
-        setOrderData(contact: { email: string, phone: string }): void {
-            this.orderData.contact = contact;
-        }
-
-        validateContacts(): boolean {
-            return this.orderData.contact.email.includes('@') && this.orderData.contact.phone.length > 0;
-        }
-
-        getOrderLot(): Order {
-            return this.orderData;
-        }
-    }
+**FormModel** — это модель для работы с данными, полученными от пользователя. Она включает методы для сохранения и валидации контактной информации и адреса доставки, а также для формирования данных о заказе.
 
 **Методы**:
 
@@ -243,103 +160,34 @@ yarn build
 -   `validateContacts`: проверяет валидность контактных данных.
 -   `getOrderLot`: возвращает данные о заказе.
 
-----------
-
 ### 2. **Компоненты View**
 
 #### 2.1 **Card**
 
-Компонент для отображения карточки товара.
-
-    class Card {
-        private element: HTMLElement;
-
-        constructor(elementId: string) {
-            this.element = document.getElementById(elementId) as HTMLElement;
-        }
-
-        setText(text: string): void {
-            this.element.textContent = text;
-        }
-
-        setPrice(price: number): void {
-            const priceElement = this.element.querySelector('.price') as HTMLElement;
-            priceElement.textContent = `$${price}`;
-        }
-    }
+**Card** — это компонент для отображения карточки товара. Он управляет отображением информации о товаре, 
+такой как его название, описание и цена. Компонент взаимодействует с моделью данных для отображения актуальной информации.
 
 **Методы**:
 
--   `setText`: обновляет текстовое содержимое элемента.
--   `setPrice`: обновляет цену товара на карточке.
+-   `setText(text: string)`: обновляет текстовое содержимое карточки товара.
+-   `setPrice(price: number)`: обновляет цену товара, отображая её в нужном формате.
+
+**Поля**:
+
+-   `element: HTMLElement`: элемент DOM, который используется для отображения карточки товара.
 
 #### 2.2 **Basket**
 
-Компонент для отображения корзины.
-
-    class Basket {
-        private basketModel: BasketModel;
-
-        constructor(basketModel: BasketModel) {
-            this.basketModel = basketModel;
-        }
-
-        renderHeaderBasketCounter(): void {
-            const counter = document.querySelector('.basket-counter') as HTMLElement;
-            counter.textContent = `${this.basketModel.getCounter()}`;
-        }
-
-        renderSumAllProducts(): void {
-            const sum = document.querySelector('.basket-total') as HTMLElement;
-            sum.textContent = `$${this.basketModel.getSumAllProducts()}`;
-        }
-    }
+**Basket** — это компонент для отображения корзины. Он взаимодействует с моделью корзины (`BasketModel`) и отображает количество товаров в корзине и их общую стоимость.
 
 **Методы**:
 
 -   `renderHeaderBasketCounter`: отображает количество товаров в корзине.
 -   `renderSumAllProducts`: отображает сумму всех товаров в корзине.
 
-----------
-
 ### 3. **EventEmitter (Presenter)**
 
-Это класс для работы с событиями, который связывает **Model** и **View**.
-
-    class EventEmitter implements IEvents {
-        private events: { [key: string]: Function[] } = {};
-
-        on(event: string, listener: Function): void {
-            if (!this.events[event]) this.events[event] = [];
-            this.events[event].push(listener);
-        }
-
-        off(event: string, listener: Function): void {
-            const listeners = this.events[event];
-            if (listeners) {
-                this.events[event] = listeners.filter(fn => fn !== listener);
-            }
-        }
-
-        emit(event: string, data: any): void {
-            const listeners = this.events[event];
-            if (listeners) {
-                listeners.forEach(listener => listener(data));
-            }
-        }
-
-        onAll(listener: Function): void {
-            Object.keys(this.events).forEach(event => this.on(event, listener));
-        }
-
-        offAll(): void {
-            this.events = {};
-        }
-
-        trigger(event: string, ...args: any[]): void {
-            this.emit(event, ...args);
-        }
-    }
+**EventEmitter** — это класс для работы с событиями, который связывает Model и View. Он позволяет подписываться на события, отписываться от них и генерировать события с передачей данных.
 
 **Методы**:
 
