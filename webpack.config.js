@@ -1,24 +1,21 @@
-// Generated using webpack-cli https://github.com/webpack/webpack-cli
-
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { DefinePlugin } = require('webpack');
 const TerserPlugin = require("terser-webpack-plugin");
-
 require('dotenv').config({
   path: path.join(process.cwd(), process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env')
 });
-
-const isProduction = process.env.NODE_ENV == "production";
-
-const stylesHandler = MiniCssExtractPlugin.loader;
+const isProduction = process.env.NODE_ENV === "production";
+const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : "style-loader";
 
 const config = {
   entry: "./src/index.ts",
   devtool: "source-map",
   output: {
     path: path.resolve(__dirname, "dist"),
+    filename: "main.js",
+    clean: true, // Очистка папки dist перед сборкой
   },
   devServer: {
     open: true,
@@ -30,11 +27,10 @@ const config = {
     new HtmlWebpackPlugin({
       template: "src/pages/index.html"
     }),
-
-    new MiniCssExtractPlugin(),
-
-    // Add your plugins here
-    // Learn more about plugins from https://webpack.js.org/configuration/plugins/
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+      chunkFilename: "[id].css",
+    }),
     new DefinePlugin({
       'process.env.DEVELOPMENT': !isProduction,
       'process.env.API_ORIGIN': JSON.stringify(process.env.API_ORIGIN ?? '')
@@ -65,15 +61,20 @@ const config = {
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-        type: "asset",
+        type: "asset/resource",
       },
-
-      // Add your rules for custom modules here
-      // Learn more about loaders from https://webpack.js.org/loaders/
+      // Добавьте ваши правила для пользовательских модулей здесь
+      // Узнайте больше о загрузчиках на https://webpack.js.org/loaders/
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".jsx", ".js", "..."],
+    extensions: [".tsx", ".ts", ".jsx", ".js"],
+    alias: {
+      '@scss': path.resolve(__dirname, 'src/scss'),
+      '@components': path.resolve(__dirname, 'src/components'),
+      '@utils': path.resolve(__dirname, 'src/utils'),
+      '@types': path.resolve(__dirname, 'src/types'),
+    },
   },
   optimization: {
     minimize: true,
@@ -82,8 +83,8 @@ const config = {
         keep_classnames: true,
         keep_fnames: true
       }
-    })]
-  }
+    })],
+  },
 };
 
 module.exports = () => {

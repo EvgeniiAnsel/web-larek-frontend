@@ -7,6 +7,16 @@
     "allowJs": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["src/*"] ,
+      "@components/*": ["components/*"],
+      "@events/*": ["events/*"],
+      "@types/*": ["types/*"]
+    }
   },
-  "include": ["src/**/*.ts", "src/types/*.d.ts"]
+  "include": [
+    "src/**/*.ts", 
+    "src/types/*.d.ts"
+  ]
 }
