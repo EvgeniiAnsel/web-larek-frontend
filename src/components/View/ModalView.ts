@@ -28,7 +28,6 @@ export class Modal implements IModal {
   private setupEventListeners(): void {
     this.closeButton.addEventListener('click', this.handleCloseClick); // Обработчик для кнопки закрытия
     this.modalContainer.addEventListener('click', this.handleContainerClick); // Обработчик для клика по контейнеру модалки
-    this.modalContainer.querySelector('.modal__container')!.addEventListener('click', this.handleInnerContainerClick); // Обработчик для клика по внутреннему контейнеру модалки
   }
 
   // Обработчик клика по кнопке закрытия
@@ -39,13 +38,11 @@ export class Modal implements IModal {
 
   // Обработчик клика по контейнеру модального окна (вне его)
   private handleContainerClick = (event: Event): void => {
-    event.preventDefault(); // Отменяем стандартное поведение
-    this.close(); // Закрываем модальное окно
-  };
-
-  // Обработчик клика по внутреннему контейнеру (не закрывать, если нажать внутри)
-  private handleInnerContainerClick = (event: Event): void => {
-    event.stopPropagation(); // Останавливаем распространение события
+    // Проверяем, был ли клик сделан по самому контейнеру, а не по внутреннему содержимому
+    if (event.target === this.modalContainer) {
+      event.preventDefault(); // Отменяем стандартное поведение
+      this.close(); // Закрываем модальное окно
+    }
   };
 
   // Метод для добавления или удаления класса
@@ -73,6 +70,5 @@ export class Modal implements IModal {
   // Метод для рендеринга содержимого в модальном окне
   public render(content: HTMLElement): void {
     this.contentElement.replaceChildren(content); // Заменяем содержимое
-    this.open(); // Открываем модальное окно
   }
 }
