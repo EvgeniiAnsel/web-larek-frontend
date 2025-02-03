@@ -17,7 +17,7 @@ import { ProductCard } from '@components/View/CardPreviewView';
 import { FormContacts } from '@components/View/FormContactView';
 
 // P - Утилиты и компоненты
-import { ensureElement } from './utils/utils';
+import { ensureElement, Page } from './utils/utils';
 import { CDN_URL, API_URL } from './utils/constants';
 import { EventEmitter } from './components/base/events';
 import { IProductItem, FormErrors } from './types/Types';
@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Инициализация моделей
+  const page = new Page();
   const events = new EventEmitter();
   const basketModel = new BasketModel(); // Модель для корзины
   const formModel = new FormModel(events); // Модель для формы
@@ -59,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Событие закрытия успешного сообщения
   events.on('success:close', () => {
     modal.close();
-    events.emit('modal:close');
   });
 
   // Открытие и закрытие модальных окон
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const card = new Card(templates.cardCatalog, events, {
         onClick: () => events.emit('card:selected', item), // При клике на карточку товара
       });
-      ensureElement('.gallery').append(card.render(item));
+      page.addProductCard(card.render(item)); // Добавляем карточку в галерею через Page
     });
   });
 
@@ -103,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
       basketModel.setSelectedCard(dataModel.selectedCard);
       basketView.renderBasketCounter(basketModel.getCounter());
       modal.close();
-      events.emit('modal:close');
     }
   });
 
@@ -139,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
     events.emit('modal:open');
   });
 
-  // Открытие формы оформления заказа
+  // Открытие формы оформления заказа (шаг 1: адрес и оплата)
   events.on('order:open', () => {
     modal.render(orderForm.render());
     formModel.setItems(basketModel.basketProducts.map((item) => item.id)); // Устанавливаем товары из корзины
@@ -158,35 +157,39 @@ document.addEventListener('DOMContentLoaded', () => {
     formModel.setOrderAddress(data.field, data.value);
   });
 
-  // Отправка заказа
+  // Отправка заказа на этапе формы заказа (до перехода к контактам)
   events.on('order:submit', () => {
     if (formModel.validateOrder()) {
-      events.emit('contacts:open'); // Переход к форме контактов
+      events.emit('contacts:open');
     } else {
-      events.emit('formErrors:change', formModel.getErrors()); // Отображаем ошибки
+      events.emit('formErrors:change', formModel.getErrors());
     }
   });
 
-  // Открытие формы контактов
+  // Открытие формы контактов (шаг 2: контакты)
   events.on('contacts:open', () => {
     console.log('contacts:open');
-    modal.render(contactsForm.render());
-    formModel.validateContacts(); // Валидируем контакты
+    const contactsElement = contactsForm.render();
+    modal.render(contactsElement);
+    // Не вызываем здесь сразу validateContacts(), чтобы не отправлять заказ автоматически.
     events.emit('modal:open');
+
+    // Добавляем обработчик клика на кнопку "Оформить" внутри формы контактов
+    const submitButton = contactsElement.querySelector('.button') as HTMLButtonElement;
+    submitButton.addEventListener('click', (e) => {
+      e.preventDefault(); // Предотвращаем стандартное поведение
+      if (formModel.validateContacts()) {
+        // Только по явному нажатию кнопки "Оформить" переходим к отправке заказа
+        events.emit('success:open');
+      } else {
+        events.emit('formErrors:change', formModel.getErrors());
+      }
+    });
   });
 
   // Изменение данных контактов
   events.on('contacts:inputChanged', (data: { field: string; value: string }) => {
     formModel.setOrderData(data.field, data.value);
-  });
-
-  // Отправка формы контактов
-  events.on('contacts:submit', () => {
-    if (formModel.validateContacts()) {
-      events.emit('success:open'); // Переход к успешному сообщению
-    } else {
-      events.emit('formErrors:change', formModel.getErrors());
-    }
   });
 
   // Обработка ошибок формы
@@ -211,21 +214,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Открытие успешного сообщения
   events.on('success:open', () => {
     const orderLot = formModel.getOrderLot();
-    
+
     // Получаем данные из корзины
     const total = basketModel.getSumAllProducts(); // Получаем стоимость из корзины
     const items = basketModel.getProductIds(); // Получаем список товаров (id) из корзины
-  
+
     // Формируем новый объект для отправки
     const orderData = {
       ...orderLot, // Данные формы
-      total, // Добавляем стоимость
-      items, // Добавляем список товаров
+      total,      // Добавляем стоимость
+      items,      // Добавляем список товаров
     };
-  
+
     // Отправляем заказ
     apiModel.postOrderLot(orderData)
       .then(() => {
@@ -244,7 +246,6 @@ document.addEventListener('DOMContentLoaded', () => {
         events.emit('modal:open');
       });
   });
-
 
   // Загрузка карточек товаров
   apiModel

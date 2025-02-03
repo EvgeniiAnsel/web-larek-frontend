@@ -133,3 +133,18 @@ export function createElement<
     }
     return element;
 }
+
+// Класс для работы с элементами страницы
+export class Page {
+    private gallery: HTMLElement;
+  
+    constructor() {
+      // Находим элемент галереи только один раз при создании класса
+      this.gallery = ensureElement('.gallery');
+    }
+  
+    // Метод для добавления карточки в галерею
+    addProductCard(card: HTMLElement): void {
+      this.gallery.append(card); // Добавляем карточку в галерею
+    }
+}
