@@ -7,8 +7,6 @@ export interface IFormModel {
   email: string; // Электронная почта
   phone: string; // Телефон
   address: string; // Адрес доставки
-  total: number; // Общая сумма заказа
-  items: string[]; // Список товаров в заказе
   setOrderAddress(field: string, value: string): void; // Установить значение поля адреса
   validateOrder(): boolean; // Проверить правильность данных заказа
   setOrderData(field: string, value: string): void; // Установить данные для контактов
@@ -175,36 +173,5 @@ export class FormModel implements IFormModel {
   // Получить ошибки формы
   public getErrors(): FormErrors {
     return this.formErrors;
-  }
-
-  // Отрисовать форму контактов
-  public renderContactsForm(template: HTMLTemplateElement): { formElement: HTMLFormElement; isValid: boolean; errorMessages: string[] } {
-    const formElement = template.content.querySelector('.form')!.cloneNode(true) as HTMLFormElement;
-    const submitButton = formElement.querySelector('.button')! as HTMLButtonElement;
-    const errorDisplay = formElement.querySelector('.form__errors')!;
-    const emailInput = formElement.querySelector('input[name="email"]') as HTMLInputElement;
-    const phoneInput = formElement.querySelector('input[name="phone"]') as HTMLInputElement;
-
-    // Обработчики ввода для email и phone
-    emailInput.addEventListener('input', (event: Event) => {
-      const target = event.target as HTMLInputElement;
-      this.setOrderData(target.name, target.value);
-    });
-    phoneInput.addEventListener('input', (event: Event) => {
-      const target = event.target as HTMLInputElement;
-      this.setOrderData(target.name, target.value);
-    });
-
-    // Обработчик отправки формы
-    formElement.addEventListener('submit', (event: Event) => {
-      event.preventDefault();
-      this.events.emit('contacts:submit'); // Эмитируем событие отправки контактных данных
-    });
-
-    return {
-      formElement,
-      isValid: submitButton.disabled, // Проверка, доступна ли кнопка отправки
-      errorMessages: Array.from(errorDisplay.textContent.split('; ')).filter(message => message.trim()), // Сообщения об ошибках
-    };
   }
 }

@@ -214,14 +214,20 @@ document.addEventListener('DOMContentLoaded', () => {
   // Открытие успешного сообщения
   events.on('success:open', () => {
     const orderLot = formModel.getOrderLot();
-    console.log('Отправляемый заказ:', orderLot);
-    if (!orderLot.payment) {
-      console.error('Не указан способ оплаты');
-      return;
-    }
     
-    apiModel
-      .postOrderLot(orderLot)
+    // Получаем данные из корзины
+    const total = basketModel.getSumAllProducts(); // Получаем стоимость из корзины
+    const items = basketModel.getProductIds(); // Получаем список товаров (id) из корзины
+  
+    // Формируем новый объект для отправки
+    const orderData = {
+      ...orderLot, // Данные формы
+      total, // Добавляем стоимость
+      items, // Добавляем список товаров
+    };
+  
+    // Отправляем заказ
+    apiModel.postOrderLot(orderData)
       .then(() => {
         modal.render(successMessage.render(formModel.getTotal())); // Показ успешного сообщения
         basketModel.clearBasketProducts(); // Очистка корзины
@@ -238,6 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
         events.emit('modal:open');
       });
   });
+
 
   // Загрузка карточек товаров
   apiModel

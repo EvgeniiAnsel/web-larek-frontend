@@ -22,6 +22,10 @@ export class BasketModel implements IBasketModel {
     return this._basketProducts;
   }
 
+  getProductIds(): string[] {
+    return this.basketProducts.map(product => product.id);
+  }
+  
   // Метод для добавления товара в корзину
   public setSelectedCard(item: IProductItem): void {
     this._basketProducts.push(item); // Добавляем товар в массив товаров корзины
