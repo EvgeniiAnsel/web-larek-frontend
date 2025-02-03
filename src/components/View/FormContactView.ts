@@ -19,7 +19,7 @@ export class FormContacts implements IContactsForm {
   public formElement: HTMLFormElement; // Элемент формы
   public submitButton: HTMLButtonElement; // Кнопка отправки
   public errorDisplay: HTMLElement; // Элемент для ошибок
-  public emailInput: HTMLInputElement; // Поле для email
+  public emailInput: HTMLInputElement; // Поле email
   public phoneInput: HTMLInputElement; // Поле для телефона
 
   // Конструктор принимает шаблон формы и события
@@ -31,32 +31,33 @@ export class FormContacts implements IContactsForm {
     this.phoneInput = this.formElement.querySelector('input[name="phone"]')! as HTMLInputElement; // Поле phone
 
     this.setupEventListeners(); // Настроим обработчики событий
-    this.updateSubmitButton(); // Обновим состояние кнопки отправки
   }
 
   // Метод для настройки обработчиков событий
   public setupEventListeners(): void {
     // Слушаем изменения в полях формы
     this.formElement.addEventListener('input', (event: Event) => {
-      const input = event.target as HTMLInputElement; // Получаем измененное поле
-      const fieldName = input.name; // Имя поля
-      const fieldValue = input.value; // Значение поля
-      this.events.emit('contacts:inputChanged', { field: fieldName, value: fieldValue }); // Отправляем событие с изменением поля
+      const input = event.target as HTMLInputElement;
+      const fieldName = input.name;
+      const fieldValue = input.value;
+      this.events.emit('contacts:inputChanged', { field: fieldName, value: fieldValue });
     });
 
     // Слушаем отправку формы
     this.formElement.addEventListener('submit', (event: Event) => {
-      event.preventDefault(); // Отменяем стандартное поведение отправки формы
-      this.events.emit('contacts:submit'); // Отправляем событие отправки формы
+      event.preventDefault();
+      this.events.emit('contacts:submit');
+    });
+
+    // Слушаем событие изменения валидности
+    this.events.on('contacts:validityChanged', (data: { isValid: boolean }) => {
+      this.submitButton.disabled = !data.isValid; // Обновляем состояние кнопки отправки
     });
   }
 
   // Метод для обновления состояния кнопки отправки
   public updateSubmitButton(): void {
-    const email = this.emailInput.value.trim(); // Очистка от пробелов
-    const phone = this.phoneInput.value.trim(); // Очистка от пробелов
-    const isValid = email && phone; // Проверка валидности (оба поля должны быть заполнены)
-    this.submitButton.disabled = !isValid; // Если одно из полей пустое, кнопка будет заблокирована
+    this.events.emit('contacts:validate'); // Просим модель проверить валидацию
   }
 
   // Сеттер для установки валидности формы

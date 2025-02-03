@@ -64,6 +64,12 @@ export class FormModel implements IFormModel {
         this.events.emit('formErrors:change', this.formErrors); // Эмитировать ошибку, если контактные данные некорректны
       }
     });
+
+    // Обработчик валидации контактных данных
+    this.events.on('contacts:validate', () => {
+      const isValid = this.validateContacts();
+      this.events.emit('contacts:validityChanged', { isValid }); // Передаем объект с полем isValid
+    });
   }
 
   // Установить адрес
