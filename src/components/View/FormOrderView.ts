@@ -7,6 +7,8 @@ export interface IOrderForm {
   submitButton: HTMLButtonElement; // Кнопка отправки формы
   errorDisplay: HTMLElement; // Элемент для отображения ошибок
   render(): HTMLElement; // Метод для рендеринга формы
+  setupEventListeners(): void; // Метод для настройки обработчиков событий
+  updateSubmitButton(): void; // Метод для обновления состояния кнопки отправки
 }
 
 // Класс для формы заказа
@@ -15,6 +17,7 @@ export class OrderForm implements IOrderForm {
   public paymentButtons: HTMLButtonElement[]; // Кнопки выбора метода оплаты
   public submitButton: HTMLButtonElement; // Кнопка отправки формы
   public errorDisplay: HTMLElement; // Элемент для ошибок
+  private addressInput: HTMLInputElement; // Поле для адреса
   private selectedPayment: string | null = null; // Переменная для выбранного метода оплаты
 
   // Конструктор принимает шаблон формы и события
@@ -23,13 +26,13 @@ export class OrderForm implements IOrderForm {
     this.paymentButtons = Array.from(this.formElement.querySelectorAll('.button_alt')) as HTMLButtonElement[]; // Получаем все кнопки оплаты
     this.submitButton = this.formElement.querySelector('.order__button')! as HTMLButtonElement; // Кнопка отправки
     this.errorDisplay = this.formElement.querySelector('.form__errors')!; // Элемент для ошибок
-
+    this.addressInput = this.formElement.querySelector('input[name="address"]')! as HTMLInputElement; // Поле для адреса
     this.setupEventListeners(); // Настроим обработчики событий
     this.updateSubmitButton(); // Обновим состояние кнопки отправки
   }
 
   // Метод для настройки обработчиков событий
-  private setupEventListeners(): void {
+  public setupEventListeners(): void {
     // Для каждой кнопки метода оплаты добавляем обработчик событий
     this.paymentButtons.forEach(button => {
       button.addEventListener('click', () => {
@@ -51,6 +54,11 @@ export class OrderForm implements IOrderForm {
       event.preventDefault(); // Отменяем стандартную отправку
       this.events.emit('order:submit'); // Отправляем событие отправки формы
     });
+
+    // Слушаем событие изменения валидности формы
+    this.events.on('order:validityChanged', (data: { isValid: boolean }) => {
+      this.isValid = data.isValid;
+    });
   }
 
   // Метод для выбора метода оплаты
@@ -64,12 +72,11 @@ export class OrderForm implements IOrderForm {
   }
 
   // Метод для обновления состояния кнопки отправки
-  private updateSubmitButton(): void {
-    const addressInput = this.formElement.querySelector('input[name="address"]') as HTMLInputElement; // Получаем поле с адресом
-    const address = addressInput.value.trim(); // Убираем лишние пробелы
+  public updateSubmitButton(): void {
+    const address = this.addressInput.value.trim(); // Убираем лишние пробелы
     // Проверяем, что метод оплаты выбран, а адрес валиден (не меньше 7 символов)
     const isValid = !!this.selectedPayment && address.length >= 7;
-    this.submitButton.disabled = !isValid; // Если всё валидно, кнопка активна
+    this.events.emit('order:validityChanged', { isValid });
   }
 
   // Сеттер для установки валидности формы

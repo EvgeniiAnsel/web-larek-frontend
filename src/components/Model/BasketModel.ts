@@ -1,4 +1,3 @@
-import { IEvents } from '../base/events';
 import { IProductItem } from '../../types/Types';
 
 // Интерфейс для модели корзины
@@ -9,6 +8,7 @@ export interface IBasketModel {
   clearBasketProducts(): void; // Очистить всю корзину
   getCounter(): number; // Получить количество товаров в корзине
   getSumAllProducts(): number; // Получить общую стоимость всех товаров в корзине
+  getProductIds(): string[]; // Получить идентификаторы всех товаров в корзине
 }
 
 // Класс, реализующий модель корзины покупок
@@ -22,10 +22,6 @@ export class BasketModel implements IBasketModel {
     return this._basketProducts;
   }
 
-  getProductIds(): string[] {
-    return this.basketProducts.map(product => product.id);
-  }
-  
   // Метод для добавления товара в корзину
   public setSelectedCard(item: IProductItem): void {
     this._basketProducts.push(item); // Добавляем товар в массив товаров корзины
@@ -52,5 +48,10 @@ export class BasketModel implements IBasketModel {
   // Метод для получения общей стоимости всех товаров в корзине
   public getSumAllProducts(): number {
     return this._basketProducts.reduce((sum, product) => sum + (product.price || 0), 0); // Суммируем цену всех товаров в корзине
+  }
+
+  // Метод для получения идентификаторов всех товаров в корзине
+  public getProductIds(): string[] {
+    return this._basketProducts.map(product => product.id);
   }
 }

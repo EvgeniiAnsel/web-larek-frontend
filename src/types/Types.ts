@@ -40,19 +40,16 @@ export interface IActions {
 
 // Интерфейс для модели формы с полями и методами для работы с ними
 export interface IFormModel {
-  paymentMethod: string;
-  email: string;
-  phone: string;
-  address: string;
-  total: number;
-  items: string[];
-  setOrderAddress(field: string, value: string): void;
-  validateOrder(): Promise<boolean>;
-  setOrderData(field: string, value: string): void;
-  validateContacts(): Promise<boolean>;
-  getOrderLot(): IOrderLot;
-  getErrors(): FormErrors;
-  renderContactsForm(template: HTMLTemplateElement): { formElement: HTMLFormElement; isValid: boolean; errorMessages: string[] };
+  payment: string; // Способ оплаты
+  email: string; // Электронная почта
+  phone: string; // Телефон
+  address: string; // Адрес доставки
+  setOrderAddress(field: string, value: string): void; // Установить значение поля адреса
+  validateOrder(): boolean; // Проверить правильность данных заказа
+  setOrderData(field: string, value: string): void; // Установить данные для контактов
+  validateContacts(): boolean; // Проверить правильность контактных данных
+  getOrderLot(): IOrderLot; // Получить данные заказа
+  getErrors(): FormErrors; // Получить ошибки формы
 }
 
 // Интерфейс для работы с событиями

@@ -135,16 +135,59 @@ export function createElement<
 }
 
 // Класс для работы с элементами страницы
+
 export class Page {
-    private gallery: HTMLElement;
-  
-    constructor() {
-      // Находим элемент галереи только один раз при создании класса
-      this.gallery = ensureElement('.gallery');
+  private gallery: HTMLElement;
+  private headerBasketButton: HTMLButtonElement;
+  private headerBasketCounter: HTMLElement;
+
+  constructor() {
+    // Находим элемент галереи только один раз при создании класса
+    this.gallery = ensureElement('.gallery');
+    // Находим кнопку корзины и счётчик в шапке
+    this.headerBasketButton = ensureElement('.header__basket') as HTMLButtonElement;
+    this.headerBasketCounter = ensureElement('.header__basket-counter');
+  }
+
+  // Метод для добавления карточки в галерею
+  addProductCard(card: HTMLElement): void {
+    this.gallery.append(card); // Добавляем карточку в галерею
+  }
+
+  // Метод для обновления счетчика товаров в корзине (в хедере)
+  renderBasketCounter(count: number): void {
+    this.headerBasketCounter.textContent = `${count}`; // Обновляем счётчик в хедере
+  }
+
+  // Метод для отображения общей стоимости товаров в корзине
+  renderTotalPrice(total: number): void {
+    const totalPriceElement = document.querySelector('.basket__price'); // Находим элемент общей стоимости товаров в основном документе
+    if (totalPriceElement) {
+      totalPriceElement.textContent = `${total} синапсов`; // Устанавливаем стоимость
     }
-  
-    // Метод для добавления карточки в галерею
-    addProductCard(card: HTMLElement): void {
-      this.gallery.append(card); // Добавляем карточку в галерею
+  }
+
+  // Метод для отображения ошибок в форме контактов
+  renderContactsFormErrors(messages: string[]): void {
+    const contactsFormElement = document.querySelector('form[name="contacts"]') as HTMLFormElement;
+    if (contactsFormElement) {
+      const errorDisplay = contactsFormElement.querySelector('.form__errors')!;
+      const submitButton = contactsFormElement.querySelector('.button') as HTMLButtonElement;
+      const contactErrors = messages.join('; ');
+      errorDisplay.textContent = contactErrors;
+      submitButton.disabled = messages.length !== 0;
     }
+  }
+
+  // Метод для отображения ошибок в форме заказа
+  renderOrderFormErrors(messages: string[]): void {
+    const orderFormElement = document.querySelector('form[name="order"]') as HTMLFormElement;
+    if (orderFormElement) {
+      const errorDisplay = orderFormElement.querySelector('.form__errors')!;
+      const submitButton = orderFormElement.querySelector('.order__button') as HTMLButtonElement;
+      const orderErrors = messages.join('; ');
+      errorDisplay.textContent = orderErrors;
+      submitButton.disabled = messages.length !== 0;
+    }
+  }
 }

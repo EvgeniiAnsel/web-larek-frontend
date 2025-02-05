@@ -212,6 +212,9 @@ yarn build
 - **`getSumAllProducts(): number`**  
   Вычисляет и возвращает суммарную стоимость товаров в корзине, суммируя цены с проверкой на null.
 
+- **`getProductIds(): string[]`**
+  Возвращает массив идентификаторов товаров в корзине.
+
 [Назад к содержанию](#содержание)
 
 ---
@@ -289,8 +292,6 @@ yarn build
 - **`getErrors(): FormErrors`**  
   Возвращает текущий объект ошибок.
 
-- **`renderContactsForm(template: HTMLTemplateElement): { formElement: HTMLFormElement; isValid: boolean; errorMessages: string[] }`**  
-  Клонирует шаблон формы контактов, устанавливает обработчики событий для ввода и сабмита, и возвращает объект, содержащий элемент формы, состояние валидности (на основе атрибута disabled кнопки) и список текстовых сообщений об ошибках.
 
 [Назад к содержанию](#содержание)
 
@@ -495,6 +496,12 @@ yarn build
   
 - **`errorDisplay: HTMLElement`**  
   Элемент для вывода сообщений об ошибках.
+
+- **`emailInput: HTMLInputElement`**
+   Поле email.
+
+- **`phoneInput: HTMLInputElement`**
+  - Поле телефон.
 
 **Методы:**  
 - **`setupEventListeners(): void`**  

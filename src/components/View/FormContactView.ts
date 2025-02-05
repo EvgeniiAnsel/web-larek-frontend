@@ -1,4 +1,5 @@
 import { IEvents } from "../base/events"; // Импортируем интерфейс событий
+import { FormErrors } from "../../types/Types"; // Импортируем интерфейс FormErrors
 
 // Интерфейс для формы контактов
 export interface IContactsForm {
@@ -29,8 +30,8 @@ export class FormContacts implements IContactsForm {
     this.errorDisplay = this.formElement.querySelector('.form__errors')!; // Элемент для отображения ошибок
     this.emailInput = this.formElement.querySelector('input[name="email"]')! as HTMLInputElement; // Поле email
     this.phoneInput = this.formElement.querySelector('input[name="phone"]')! as HTMLInputElement; // Поле phone
-
     this.setupEventListeners(); // Настроим обработчики событий
+    this.updateSubmitButton(); // Обновим состояние кнопки отправки
   }
 
   // Метод для настройки обработчиков событий
@@ -53,6 +54,11 @@ export class FormContacts implements IContactsForm {
     this.events.on('contacts:validityChanged', (data: { isValid: boolean }) => {
       this.submitButton.disabled = !data.isValid; // Обновляем состояние кнопки отправки
     });
+
+    // Слушаем событие изменения валидности формы
+    this.events.on('contacts:validityChanged', (data: { isValid: boolean }) => {
+      this.isValid = data.isValid;
+    });
   }
 
   // Метод для обновления состояния кнопки отправки
@@ -68,7 +74,6 @@ export class FormContacts implements IContactsForm {
   // Сеттер для отображения ошибок
   public set errorMessages(messages: string[]) {
     this.errorDisplay.textContent = messages.join('; '); // Отображаем все сообщения об ошибках через точку с запятой
-    this.updateSubmitButton(); // Обновляем состояние кнопки отправки
   }
 
   // Метод для рендеринга формы

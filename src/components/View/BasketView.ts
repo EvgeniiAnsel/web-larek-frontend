@@ -1,5 +1,6 @@
 import { createElement } from "../../utils/utils";
 import { IEvents } from "../base/events";
+import { IProductItem } from "../../types/Types";
 
 // Интерфейс для представления корзины
 export interface IBasketView {
@@ -24,9 +25,9 @@ export class BasketView implements IBasketView {
     this.basketElement = basketClone; // Клонируем шаблон корзины
     this.titleElement = this.basketElement.querySelector('.modal__title')!; // Заголовок корзины
     this.itemListElement = this.basketElement.querySelector('.basket__list')!; // Список товаров
-    this.actionButton = this.basketElement.querySelector('.basket__button')!; // Кнопка оформления заказа
+    this.actionButton = this.basketElement.querySelector('.basket__button')! as HTMLButtonElement; // Кнопка оформления заказа
     this.totalPriceElement = this.basketElement.querySelector('.basket__price')!; // Элемент для общей стоимости
-    this.headerButton = document.querySelector('.header__basket')!; // Кнопка корзины в хедере
+    this.headerButton = document.querySelector('.header__basket')! as HTMLButtonElement; // Кнопка корзины в хедере
     this.headerCounter = document.querySelector('.header__basket-counter')!; // Счётчик товаров в хедере
     this.setupEventListeners(); // Привязываем события
     this.clearBasket(); // Очищаем корзину при инициализации

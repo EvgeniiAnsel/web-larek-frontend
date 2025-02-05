@@ -8,7 +8,7 @@ export interface IDataModel {
   setPreview(item: IProductItem): void; // Установить выбранный товар для предпросмотра
 }
 
-export class DataModel implements IDataModel {
+export class ProductList implements IDataModel {
   private _productCards: IProductItem[] = []; // Массив товаров
   private _selectedCard: IProductItem | null = null; // Выбранный товар (может быть null, если товар не выбран)
 
