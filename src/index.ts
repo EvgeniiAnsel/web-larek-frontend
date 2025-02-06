@@ -1,7 +1,7 @@
 import './scss/styles.scss';
 import { ApiModel } from './components/Model/ApiModel';
 import { FormModel } from './components/Model/FormModel';
-import { ProductList } from './components/Model/DataModel';
+import { ProductList } from './components/Model/ProductModel';
 import { BasketModel } from './components/Model/BasketModel';
 
 import { Modal } from '@components/View/ModalView';
@@ -10,11 +10,12 @@ import { OrderForm } from '@components/View/FormOrderView';
 import { BasketView } from '@components/View/BasketView';
 import { FormContacts } from '@components/View/FormContactView';
 
-import { ensureElement, Page } from './utils/utils';
-import { CDN_URL, API_URL } from './utils/constants';
-import { EventEmitter } from './components/base/events';
-import { IProductItem, FormErrors } from './types/Types';
 import { Presenter } from './components/Presenter/Presenter';
+import { EventEmitter } from './components/base/events';
+import { CDN_URL, API_URL } from './utils/constants';
+import { ensureElement, Page } from './utils/utils';
+import { IProductItem, FormErrors } from './types/Types';
+
 
 document.addEventListener('DOMContentLoaded', () => {
   const templates = {

@@ -2,13 +2,13 @@ import { IProductItem } from "../../types/Types";
 import { IEvents } from "../base/events";
 
 // Интерфейс для модели данных
-export interface IDataModel {
+export interface IProductModel {
   productCards: IProductItem[]; // Список товаров
   selectedCard: IProductItem; // Выбранный товар
   setPreview(item: IProductItem): void; // Установить выбранный товар для предпросмотра
 }
 
-export class ProductList implements IDataModel {
+export class ProductList implements IProductModel {
   private _productCards: IProductItem[] = []; // Массив товаров
   private _selectedCard: IProductItem | null = null; // Выбранный товар (может быть null, если товар не выбран)
 

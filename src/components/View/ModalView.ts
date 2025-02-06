@@ -1,4 +1,4 @@
-import { IEvents } from "../base/events"; // Импортируем интерфейс событий
+import { IEvents } from "../base/events";
 
 // Интерфейс для модального окна
 export interface IModal {

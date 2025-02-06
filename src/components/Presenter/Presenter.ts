@@ -1,7 +1,8 @@
 import { ApiModel } from '../Model/ApiModel';
 import { FormModel } from '../Model/FormModel';
-import { ProductList } from '../Model/DataModel';
+import { ProductList } from '../Model/ProductModel';
 import { BasketModel } from '../Model/BasketModel';
+
 import { Card } from '../View/CardView';
 import { Modal } from '../View/ModalView';
 import { Success } from '../View/SuccessView';
@@ -10,12 +11,13 @@ import { BasketView } from '../View/BasketView';
 import { BasketItem } from '../View/BasketItemView';
 import { ProductCard } from '../View/CardPreviewView';
 import { FormContacts } from '../View/FormContactView';
+
 import { IEvents } from '../base/events';
 import { Page } from '../../utils/utils';
 import { IProductItem, IOrderLot, FormErrors } from '../../types/Types';
 
-export class Presenter {
-  private formModel: FormModel;
+export class Presenter { 
+  private formModel: FormModel; 
   private basketModel: BasketModel;
   private apiModel: ApiModel;
   private orderForm: OrderForm;
@@ -68,7 +70,6 @@ export class Presenter {
     this.page = page;
     this.templates = templates;
     this.dataModel = dataModel;
-
     this.setupEventListeners();
   }
 
@@ -138,9 +139,7 @@ export class Presenter {
         total: this.basketModel.getSumAllProducts(),
         items: this.basketModel.getProductIds(),
       };
-
       console.log('Формируемый заказ:', orderData);
-
       this.apiModel.postOrderLot(orderData)
         .then(() => {
           this.modal.render(this.successMessage.render(orderData.total));
@@ -159,7 +158,6 @@ export class Presenter {
     this.events.on('basket:open', () => {
       this.modal.render(this.basketView.render());
       this.events.emit('modal:open');
-      this.events.emit('basket:change'); // Обновляем корзину после открытия
     });
 
     this.events.on('basket:change', () => {
@@ -205,6 +203,10 @@ export class Presenter {
         });
         this.page.addProductCard(card.render(item));
       });
+    });
+
+    this.events.on('contacts:validityChanged', (data: { isValid: boolean }) => {
+      this.contactsForm.isValid = data.isValid;
     });
   }
 

@@ -1,12 +1,11 @@
-import { IActions, IProductItem } from "../../types/Types"; // Импортируем типы для действий и продукта
-import { IEvents } from "../base/events"; // Импорт интерфейса для работы с событиями
+import { IActions, IProductItem } from "../../types/Types";
+import { IEvents } from "../base/events";
 
 // Интерфейс для карточки продукта
 export interface ICard {
   render(data: IProductItem): HTMLElement; // Метод для рендеринга карточки
 }
 
-// Класс Card, который реализует интерфейс ICard
 export class Card implements ICard {
   protected readonly cardElement: HTMLElement; // Элемент карточки
   private readonly elements: Record<string, HTMLElement | HTMLImageElement>; // Элементы карточки (категория, заголовок, изображение, цена)

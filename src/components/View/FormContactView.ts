@@ -1,5 +1,4 @@
-import { IEvents } from "../base/events"; // Импортируем интерфейс событий
-import { FormErrors } from "../../types/Types"; // Импортируем интерфейс FormErrors
+import { IEvents } from "../base/events";
 
 // Интерфейс для формы контактов
 export interface IContactsForm {
@@ -48,16 +47,6 @@ export class FormContacts implements IContactsForm {
     this.formElement.addEventListener('submit', (event: Event) => {
       event.preventDefault();
       this.events.emit('contacts:submit');
-    });
-
-    // Слушаем событие изменения валидности
-    this.events.on('contacts:validityChanged', (data: { isValid: boolean }) => {
-      this.submitButton.disabled = !data.isValid; // Обновляем состояние кнопки отправки
-    });
-
-    // Слушаем событие изменения валидности формы
-    this.events.on('contacts:validityChanged', (data: { isValid: boolean }) => {
-      this.isValid = data.isValid;
     });
   }
 

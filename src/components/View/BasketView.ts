@@ -1,6 +1,5 @@
 import { createElement } from "../../utils/utils";
 import { IEvents } from "../base/events";
-import { IProductItem } from "../../types/Types";
 
 // Интерфейс для представления корзины
 export interface IBasketView {

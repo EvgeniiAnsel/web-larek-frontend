@@ -1,6 +1,6 @@
-import { Card } from "@components/View/CardView"; // Импортируем родительский класс Card
-import { IEvents } from "@components/base/events"; // Импорт интерфейса событий
-import { IActions, IProductItem } from "../../types/Types"; // Импорт интерфейсов для действий и продукта
+import { Card } from "@components/View/CardView";
+import { IEvents } from "@components/base/events";
+import { IActions, IProductItem } from "../../types/Types";
 
 // Интерфейс для карточки продукта
 export interface IProductCard {
@@ -9,7 +9,6 @@ export interface IProductCard {
   descriptionElement: HTMLElement; // Элемент для описания продукта
 }
 
-// Класс ProductCard, который расширяет класс Card
 export class ProductCard extends Card implements IProductCard {
   public readonly actionButton: HTMLButtonElement; // Кнопка для добавления в корзину
   public readonly descriptionElement: HTMLElement; // Элемент для описания товара
